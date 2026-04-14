@@ -34,7 +34,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_images(self, obj):
         request = self.context.get('request')
-        if obj.original_image:
+        if not obj.original_image or not obj.original_image.name:
+            return None
+        try:
             return {
                 'small': (
                     request.build_absolute_uri(obj.image_small.url)
@@ -49,7 +51,12 @@ class ProductSerializer(serializers.ModelSerializer):
                     if request else obj.image_large.url
                 ),
             }
-        return None
+        except (FileNotFoundError, ValueError, OSError):
+            return {
+                'smail': None,
+                'medium': None,
+                'large': None,
+            }
 
 
 class CartItemSerializer(serializers.ModelSerializer):
