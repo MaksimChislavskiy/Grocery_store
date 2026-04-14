@@ -1,15 +1,15 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.pagination import PageNumberPagination
-from django.shortcuts import get_object_or_404
 
-from .models import Category, Product, Cart, CartItem
+from .models import Cart, CartItem, Category, Product
 from .serializers import (
+    CartItemCreateUpdateSerializer,
+    CartSerializer,
     CategoryWithSubcategoriesSerializer,
     ProductSerializer,
-    CartSerializer,
-    CartItemCreateUpdateSerializer
 )
 
 
@@ -52,7 +52,9 @@ class CartView(APIView):
             if not created:
                 cart_item.quantity += quantity
                 cart_item.save()
-            return Response(CartSerializer(cart).data, status=status.HTTP_201_CREATED)
+            return Response(
+                CartSerializer(cart).data, status=status.HTTP_201_CREATED
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request):
@@ -63,7 +65,9 @@ class CartView(APIView):
         if not product_id or quantity is None:
             return Response({'error': 'Укажите product и quantity'},
                             status=status.HTTP_400_BAD_REQUEST)
-        cart_item = get_object_or_404(CartItem, cart=cart, product_id=product_id)
+        cart_item = get_object_or_404(
+            CartItem, cart=cart, product_id=product_id
+        )
         cart_item.quantity = quantity
         cart_item.save()
         return Response(CartSerializer(cart).data)
@@ -74,7 +78,9 @@ class CartView(APIView):
         product_id = request.data.get('product')
         if product_id:
             # Удалить конкретный товар
-            cart_item = get_object_or_404(CartItem, cart=cart, product_id=product_id)
+            cart_item = get_object_or_404(
+                CartItem, cart=cart, product_id=product_id
+            )
             cart_item.delete()
         else:
             # Очистить корзину

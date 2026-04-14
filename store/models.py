@@ -1,8 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
-from imagekit.models import ImageSpecField, ProcessedImageField
-from imagekit.processors import ResizeToFit, ResizeToFill
+from django.db import models
 from django.utils.text import slugify
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFill, ResizeToFit
 
 
 class Category(models.Model):
@@ -68,7 +68,9 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=200, verbose_name='Наименование')
     slug = models.SlugField(unique=True, blank=True, verbose_name='Slug')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name='Цена'
+    )
     original_image = ProcessedImageField(
         upload_to='products/',
         processors=[ResizeToFit(1200, 1200)],
@@ -149,7 +151,9 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Продукт'
     )
-    quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
+    quantity = models.PositiveIntegerField(
+        default=1, verbose_name='Количество'
+    )
 
     class Meta:
         verbose_name = 'Элемент корзины'

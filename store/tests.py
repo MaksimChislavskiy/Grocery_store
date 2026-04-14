@@ -1,16 +1,18 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import APIClient
 from rest_framework import status
-from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
-from .models import Category, SubCategory, Product, Cart
+from .models import Cart, Category, Product, SubCategory
 
 
 class ProductAPITest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.category = Category.objects.create(name='Тестовая категория', slug='test-cat')
+        self.category = Category.objects.create(
+            name='Тестовая категория', slug='test-cat'
+        )
         self.subcategory = SubCategory.objects.create(
             category=self.category,
             name='Тестовая подкатегория',
@@ -34,10 +36,14 @@ class ProductAPITest(TestCase):
 class CartAPITest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = User.objects.create_user(
+            username='testuser', password='testpass'
+        )
         self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(name='Категория')
-        self.subcategory = SubCategory.objects.create(category=self.category, name='Подкатегория')
+        self.subcategory = SubCategory.objects.create(
+            category=self.category, name='Подкатегория'
+        )
         self.product = Product.objects.create(
             subcategory=self.subcategory,
             name='Продукт',

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, SubCategory, Product, Cart, CartItem
+from .models import Cart, CartItem, Category, Product, SubCategory
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
@@ -18,40 +18,64 @@ class CategoryWithSubcategoriesSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.CharField(source='subcategory.category.name', read_only=True)
-    subcategory = serializers.CharField(source='subcategory.name', read_only=True)
+    category = serializers.CharField(
+        source='subcategory.category.name', read_only=True
+    )
+    subcategory = serializers.CharField(
+        source='subcategory.name', read_only=True
+    )
     images = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'slug', 'category', 'subcategory', 'price', 'images')
+        fields = (
+            'id', 'name', 'slug', 'category', 'subcategory', 'price', 'images'
+        )
 
     def get_images(self, obj):
         request = self.context.get('request')
         if obj.original_image:
             return {
-                'small': request.build_absolute_uri(obj.image_small.url) if request else obj.image_small.url,
-                'medium': request.build_absolute_uri(obj.image_medium.url) if request else obj.image_medium.url,
-                'large': request.build_absolute_uri(obj.image_large.url) if request else obj.image_large.url,
+                'small': (
+                    request.build_absolute_uri(obj.image_small.url)
+                    if request else obj.image_small.url
+                ),
+                'medium': (
+                    request.build_absolute_uri(obj.image_medium.url)
+                    if request else obj.image_medium.url
+                ),
+                'large': (
+                    request.build_absolute_uri(obj.image_large.url)
+                    if request else obj.image_large.url
+                ),
             }
         return None
 
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)
-    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
-    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    product_price = serializers.DecimalField(
+        source='product.price', max_digits=10, decimal_places=2, read_only=True
+    )
+    total_price = serializers.DecimalField(
+        max_digits=10, decimal_places=2, read_only=True
+    )
 
     class Meta:
         model = CartItem
-        fields = ('id', 'product', 'product_name', 'product_price', 'quantity', 'total_price')
+        fields = (
+            'id', 'product', 'product_name',
+            'product_price', 'quantity', 'total_price'
+        )
         read_only_fields = ('id',)
 
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only=True)
     total_items = serializers.IntegerField(read_only=True)
-    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    total_price = serializers.DecimalField(
+        max_digits=10, decimal_places=2, read_only=True
+    )
 
     class Meta:
         model = Cart
@@ -65,5 +89,7 @@ class CartItemCreateUpdateSerializer(serializers.ModelSerializer):
 
     def validate_quantity(self, value):
         if value < 1:
-            raise serializers.ValidationError("Количество должно быть не менее 1")
+            raise serializers.ValidationError(
+                "Количество должно быть не менее 1"
+            )
         return value

@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 
-from .views import CategoryListView, ProductListView, CartView
+from .views import CartView, CategoryListView, ProductListView
 
 urlpatterns = [
     path('categories/', CategoryListView.as_view(), name='category-list'),
