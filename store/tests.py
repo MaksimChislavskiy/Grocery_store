@@ -32,6 +32,17 @@ class ProductAPITest(TestCase):
         self.assertIn('results', response.data)
         self.assertEqual(len(response.data['results']), 1)
 
+    def test_get_category_list(self):
+        """Тест GET запроса списка категорий с подкатегориями"""
+        url = reverse('category-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('results', response.data)
+        self.assertEqual(len(response.data['results']), 1)
+        category_data = response.data['results'][0]
+        self.assertIn('subcategories', category_data)
+        self.assertEqual(category_data['name'], 'Тестовая категория')
+
 
 class CartAPITest(TestCase):
     def setUp(self):
@@ -58,3 +69,10 @@ class CartAPITest(TestCase):
         cart = Cart.objects.get(user=self.user)
         self.assertEqual(cart.items.count(), 1)
         self.assertEqual(cart.items.first().quantity, 2)
+
+    def test_get_cart_requires_auth(self):
+        """Тест что доступ к корзине только для авторизованных"""
+        self.client.logout()
+        url = reverse('cart')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

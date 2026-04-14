@@ -1,0 +1,124 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Фрукты",
+      "slug": "frukty",
+      "image": "categories/frukty.jpg"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Овощи",
+      "slug": "ovoschi",
+      "image": "categories/ovoschi.jpg"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Молочные продукты",
+      "slug": "molochnye-produkty",
+      "image": "categories/molochnye-produkty.jpg"
+    }
+  },
+  {
+    "model": "store.subcategory",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Цитрусовые",
+      "slug": "citrusovye",
+      "image": "subcategories/citrusovye.jpg"
+    }
+  },
+  {
+    "model": "store.subcategory",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Яблоки и груши",
+      "slug": "yabloki-i-grushi",
+      "image": "subcategories/yabloki-i-grushi.jpg"
+    }
+  },
+  {
+    "model": "store.subcategory",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Зелень",
+      "slug": "zelen",
+      "image": "subcategories/zelen.jpg"
+    }
+  },
+  {
+    "model": "store.subcategory",
+    "pk": 4,
+    "fields": {
+      "category": 3,
+      "name": "Молоко",
+      "slug": "moloko",
+      "image": "subcategories/moloko.jpg"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "subcategory": 1,
+      "name": "Апельсины",
+      "slug": "apel-siny",
+      "price": "150.00",
+      "original_image": "products/apelsiny.jpg"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "subcategory": 1,
+      "name": "Лимоны",
+      "slug": "limony",
+      "price": "120.00",
+      "original_image": "products/limony.jpg"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "subcategory": 2,
+      "name": "Яблоки Голден",
+      "slug": "yabloki-golden",
+      "price": "90.00",
+      "original_image": "products/yabloki-golden.jpg"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "subcategory": 3,
+      "name": "Укроп",
+      "slug": "ukrop",
+      "price": "50.00",
+      "original_image": "products/ukrop.jpg"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "subcategory": 4,
+      "name": "Молоко 3.2%",
+      "slug": "moloko-3-2",
+      "price": "80.00",
+      "original_image": "products/moloko-3-2.jpg"
+    }
+  }
+]
